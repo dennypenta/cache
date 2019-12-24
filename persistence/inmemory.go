@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/patrickmn/go-cache"
+	"github.com/robfig/go-cache"
 )
 
 //InMemoryStore represents the cache with memory persistence
@@ -42,9 +42,9 @@ func (c *InMemoryStore) Set(key string, value interface{}, expires time.Duration
 // Add (see CacheStore interface)
 func (c *InMemoryStore) Add(key string, value interface{}, expires time.Duration) error {
 	err := c.Cache.Add(key, value, expires)
-	//if err == cache.ErrKeyExists {
-	//	return ErrNotStored
-	//}
+	if err == cache.ErrKeyExists {
+		return ErrNotStored
+	}
 	return err
 }
 
@@ -58,33 +58,27 @@ func (c *InMemoryStore) Replace(key string, value interface{}, expires time.Dura
 
 // Delete (see CacheStore interface)
 func (c *InMemoryStore) Delete(key string) error {
-	//if found := c.Cache.Delete(key); !found {
-	//	return ErrCacheMiss
-	//}
-	c.Cache.Delete(key)
+	if found := c.Cache.Delete(key); !found {
+		return ErrCacheMiss
+	}
 	return nil
 }
 
 // Increment (see CacheStore interface)
 func (c *InMemoryStore) Increment(key string, n uint64) (uint64, error) {
-	//newValue, err := c.Cache.Increment(key, n)
-	//if err == cache.ErrCacheMiss {
-	//	return 0, ErrCacheMiss
-	//}
-	//return newValue, err
-	newValue, err := c.Cache.IncrementUint64(key, n)
-	//if err == cache.ErrCacheMiss {
-	//	return 0, ErrCacheMiss
-	//}
+	newValue, err := c.Cache.Increment(key, n)
+	if err == cache.ErrCacheMiss {
+		return 0, ErrCacheMiss
+	}
 	return newValue, err
 }
 
 // Decrement (see CacheStore interface)
 func (c *InMemoryStore) Decrement(key string, n uint64) (uint64, error) {
-	newValue, err := c.Cache.DecrementUint64(key, n)
-	//if err == cache.ErrCacheMiss {
-	//	return 0, ErrCacheMiss
-	//}
+	newValue, err := c.Cache.Decrement(key, n)
+	if err == cache.ErrCacheMiss {
+		return 0, ErrCacheMiss
+	}
 	return newValue, err
 }
 
