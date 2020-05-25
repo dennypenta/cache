@@ -3,7 +3,7 @@ package persistence
 import (
 	"time"
 
-	"github.com/axengine/cache/utils"
+	"github.com/dennypenta/cache/utils"
 	"github.com/gomodule/redigo/redis"
 )
 

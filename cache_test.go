@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/axengine/cache/persistence"
+	"github.com/dennypenta/cache/persistence"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )

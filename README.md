@@ -14,13 +14,13 @@ Gin middleware/handler to enable Cache.
 Download and install it:
 
 ```sh
-$ go get github.com/axengine/cache
+$ go get github.com/dennypenta/cache
 ```
 
 Import it in your code:
 
 ```go
-import "github.com/axengine/cache"
+import "github.com/dennypenta/cache"
 ```
 
 ### Canonical example:
@@ -34,8 +34,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axengine/cache"
-	"github.com/axengine/cache/persistence"
+	"github.com/dennypenta/cache"
+	"github.com/dennypenta/cache/persistence"
 	"github.com/gin-gonic/gin"
 )
 
