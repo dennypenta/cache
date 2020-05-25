@@ -45,7 +45,7 @@ type cachedWriter struct {
 var _ gin.ResponseWriter = &cachedWriter{}
 
 // CreateKey creates a package specific key for a given string
-func CreateKey(u string) string {
+var CreateKey = func(u string) string {
 	return urlEscape(PageCachePrefix, u)
 }
 
