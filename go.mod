@@ -1,4 +1,4 @@
-module github.com/gin-contrib/cache
+module github.com/axengine/cache
 
 go 1.13
 

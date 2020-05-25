@@ -14,13 +14,13 @@ Gin middleware/handler to enable Cache.
 Download and install it:
 
 ```sh
-$ go get github.com/gin-contrib/cache
+$ go get github.com/axengine/cache
 ```
 
 Import it in your code:
 
 ```go
-import "github.com/gin-contrib/cache"
+import "github.com/axengine/cache"
 ```
 
 ### Canonical example:
@@ -34,8 +34,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gin-contrib/cache"
-	"github.com/gin-contrib/cache/persistence"
+	"github.com/axengine/cache"
+	"github.com/axengine/cache/persistence"
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,7 +48,8 @@ func main() {
 		c.String(200, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
 	// Cached Page
-	r.GET("/cache_ping", cache.CachePage(store, time.Minute, func(c *gin.Context) {
+    // CachePage在并发时会引起缓存数据错误，推荐使用CachePageAtomic
+	r.GET("/cache_ping", cache.CachePageAtomic(store, time.Minute, func(c *gin.Context) {
 		c.String(200, "pong "+fmt.Sprint(time.Now().Unix()))
 	}))
 
