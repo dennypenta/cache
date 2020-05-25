@@ -50,6 +50,10 @@ var CreateKey = func(u string) string {
 	return urlEscape(PageCachePrefix, u)
 }
 
+var CreateKeyFromRequest = func(r *http.Request) string {
+	return urlEscape(PageCachePrefix, r.URL.RequestURI())
+}
+
 func urlEscape(prefix string, u string) string {
 	key := url.QueryEscape(u)
 	if len(key) > 200 {
@@ -136,8 +140,7 @@ func Cache(store *persistence.CacheStore) gin.HandlerFunc {
 func SiteCache(store persistence.CacheStore, expire time.Duration) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var cache responseCache
-		url := c.Request.URL
-		key := CreateKey(url.RequestURI())
+		key := CreateKeyFromRequest(c.Request)
 		if err := store.Get(key, &cache); err != nil {
 			c.Next()
 		} else {
