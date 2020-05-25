@@ -140,7 +140,7 @@ func Cache(store *persistence.CacheStore) gin.HandlerFunc {
 func SiteCache(store persistence.CacheStore, expire time.Duration) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var cache responseCache
-		key := CreateKeyFromRequest(c.Request)
+		key := CreateKey(c.Request.URL.RequestURI())
 		if err := store.Get(key, &cache); err != nil {
 			c.Next()
 		} else {
@@ -159,8 +159,7 @@ func SiteCache(store persistence.CacheStore, expire time.Duration) gin.HandlerFu
 func CachePage(store persistence.CacheStore, expire time.Duration, handle gin.HandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var cache responseCache
-		url := c.Request.URL
-		key := CreateKey(url.RequestURI())
+		key := CreateKeyFromRequest(c.Request)
 		if err := store.Get(key, &cache); err != nil {
 			if err != persistence.ErrCacheMiss {
 				log.Println(err.Error())
