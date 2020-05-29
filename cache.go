@@ -244,3 +244,15 @@ func CachePageWithoutHeader(store persistence.CacheStore, expire time.Duration, 
 		}
 	}
 }
+
+// CachePageAtomic Decorator
+func CachePageAtomicWithoutHeader(store persistence.CacheStore, expire time.Duration, handle gin.HandlerFunc) gin.HandlerFunc {
+	var m sync.Mutex
+	p := CachePageWithoutHeader(store, expire, handle)
+	return func(c *gin.Context) {
+		m.Lock()
+		defer m.Unlock()
+		p(c)
+	}
+}
+
